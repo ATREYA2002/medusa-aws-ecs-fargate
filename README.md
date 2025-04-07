@@ -1,115 +1,55 @@
-Medusa Backend Deployment on AWS ECS using Terraform and GitHub Actions
 
-This project demonstrates how to deploy the Medusa open-source headless commerce backend on AWS ECS with Fargate using Infrastructure as Code (IaC) via Terraform, and automate deployments with GitHub Actions.
+---
 
-🚀 Features
+## ✅ Features
 
-Medusa backend setup using create-medusa-app
+- 📦 Automated deployment of Medusa backend on AWS Fargate
+- 🏗 Infrastructure-as-Code using Terraform
+- 🐳 Dockerized backend with build & push to Docker Hub
+- 🔁 Continuous Deployment via GitHub Actions
+- ☁️ PostgreSQL (RDS) setup with live DB endpoint injected
+- 🔐 GitHub Secrets used for secure automation
 
-Dockerized and pushed to Docker Hub
+---
 
-ECS Cluster with Fargate launch type
+## 🛠 Technologies Used
 
-RDS PostgreSQL backend
+- **Medusa.js**
+- **Terraform**
+- **AWS ECS, RDS, IAM**
+- **Docker**
+- **GitHub Actions**
 
-Secure VPC, Subnets, Route Tables, and Security Groups
+---
 
-GitHub Actions pipeline for CI/CD (Docker build and ECS deploy)
+## ⚙️ How It Works
 
-🛠️ Technologies Used
+### 1. 🧑‍💻 IAM User Creation
 
-Terraform for infrastructure provisioning
+Created an IAM user with permissions for:
+- ECS
+- ECR
+- RDS
+- VPC
+- IAM
+- Secrets Manager (optional)
 
-AWS ECS + Fargate for container orchestration
+Access keys added as GitHub secrets.
 
-Amazon RDS for PostgreSQL database
+### 2. 🧱 Created Terraform Root Repository
 
-Docker for containerizing the Medusa backend
+- Built the network layer: VPC, Subnets, IGW
+- Defined ECS Cluster, RDS Postgres, IAM roles
+- Output: RDS endpoint auto-populated in `DATABASE_URL`
 
-GitHub Actions for CI/CD pipeline
+### 3. 🧑‍🍳 Installed Medusa Backend
 
-📁 Project Structure
+- Used `npx create-medusa-app@latest` with `--skip-db`
+- Setup `.env` with actual `DATABASE_URL` and secrets
+- Created a production-ready Dockerfile
 
-medusa-aws-ecs-fargate/
-├── medusa-backend/          # Medusa application (Dockerized)
-│   ├── Dockerfile
-│   ├── medusa-config.ts
-│   └── ...
-├── medusa-terraform/       # Terraform IaC setup
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   └── .gitignore
-└── .github/workflows/
-    └── deploy.yml           # GitHub Actions CD pipeline
+### 4. 🐳 Built & Pushed Docker Image
 
-📦 Docker Setup
-
-Navigate to medusa-backend/
-
-Build and tag the Docker image:
-
-docker build -t your-dockerhub-username/medusa-backend .
-
-Push to Docker Hub:
-
-docker push your-dockerhub-username/medusa-backend
-
-Update the image URL in main.tf Terraform file:
-
-image = "your-dockerhub-username/medusa-backend:latest"
-
-☁️ Terraform Deployment
-
-Navigate to medusa-terraform/
-
-Set your AWS credentials
-
-Run:
-
-terraform init
-terraform apply
-
-Note the rds_endpoint output for the database URL.
-
-🔐 GitHub Actions Setup
-
-Secrets to Add in GitHub
-
-Go to your GitHub repo > Settings > Secrets > Actions and add:
-
-Name
-
-Value
-
-DOCKER_HUB_USERNAME
-
-Your DockerHub username
-
-DOCKER_HUB_PASSWORD
-
-Your DockerHub password
-
-AWS_ACCESS_KEY_ID
-
-IAM user's access key ID
-
-AWS_SECRET_ACCESS_KEY
-
-IAM user's secret access key
-
-The GitHub Action will:
-
-Build the Docker image
-
-Push it to Docker Hub
-
-Update ECS with the new image
-
-⚠️ Issues Faced
-
-The official Medusa documentation had outdated CLI references
-
-Some Docker build issues due to internal errors in medusa-config.ts
-
-Had to manually extract essential files for GitHub upload (excluding huge folders like node_modules and .terraform)
+```bash
+docker build -t pranidock/medusa-backend .
+docker push pranidock/medusa-backend
