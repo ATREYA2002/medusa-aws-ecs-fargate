@@ -50,7 +50,7 @@ Access keys added as GitHub secrets.
 
 ### 3. 🧑‍🍳 Installed Medusa Backend
 
-- Used `npx create-medusa-app@latest` with `--skip-db`
+- Used `npx create-medusa-app@latest medusa-backend` with `--skip-db`
 - Setup `.env` with actual `DATABASE_URL` and secrets
 - Created a production-ready Dockerfile
 
