@@ -1,3 +1,9 @@
+# 🚀 Medusa Backend Deployment on AWS ECS (Fargate) using Terraform & GitHub Actions
+
+This project demonstrates the end-to-end deployment of the [Medusa](https://medusajs.com/) open-source headless commerce backend on AWS ECS Fargate. The infrastructure is defined using Terraform, and continuous delivery is enabled using GitHub Actions.
+
+## 📂 Project Structure
+
 
 ---
 
@@ -53,3 +59,48 @@ Access keys added as GitHub secrets.
 ```bash
 docker build -t pranidock/medusa-backend .
 docker push pranidock/medusa-backend
+
+```
+
+
+5. 🔁 Set Up GitHub Actions for CD
+Configured .github/workflows/deploy.yml to:
+
+Build the Docker image
+
+Push it to Docker Hub
+
+Update ECS task definition automatically
+
+
+6. 🚀 Deployed via Terraform
+```bash
+cd medusa-terraform
+terraform init
+terraform apply
+```
+7.🔐 GitHub Secrets Required
+
+Name	Description
+DOCKER_HUB_USERNAME	Docker Hub username
+DOCKER_HUB_PASSWORD	Docker Hub password/token
+AWS_ACCESS_KEY_ID	AWS IAM access key
+AWS_SECRET_ACCESS_KEY	AWS IAM secret key
+
+
+
+Issues Faced
+⚠️ Medusa backend crashes if essential environment variables like DATABASE_URL or MEDUSA_ADMIN_ONBOARDING_TYPE are not provided.
+
+📦 Terraform state files (.terraform/, terraform.tfstate) and cache caused GitHub push failures due to large file size and local-only dependencies. These were cleaned and ignored using .gitignore.
+
+🐳 Docker image build failed due to missing admin UI (index.html not found). Resolved this by skipping admin onboarding or excluding the admin folder.
+
+Medusa backend container exited unexpectedly during ECS provisioning, likely due to:
+
+Missing or outdated Medusa source files
+
+Conflicts in configuration (e.g., outdated medusa-config.ts)
+
+🔁 GitHub Actions failed during CD because the Docker image build broke due to outdated or partially broken backend code pushed to GitHub. Required a stable and minimal medusa-backend for production builds.
+
