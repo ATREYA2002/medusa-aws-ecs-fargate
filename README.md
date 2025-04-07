@@ -78,6 +78,8 @@ Configured .github/workflows/deploy.yml to:
 Build the Docker image
 
 Push it to Docker Hub
+![image](https://github.com/user-attachments/assets/d0770f57-0d85-4d36-82c4-17d0fc84a4e7)
+
 
 Update ECS task definition automatically
 
