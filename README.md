@@ -89,18 +89,19 @@ AWS_SECRET_ACCESS_KEY	AWS IAM secret key
 
 
 
-Issues Faced
+8. 🧪 Issues Faces
+   
 ⚠️ Medusa backend crashes if essential environment variables like DATABASE_URL or MEDUSA_ADMIN_ONBOARDING_TYPE are not provided.
 
 📦 Terraform state files (.terraform/, terraform.tfstate) and cache caused GitHub push failures due to large file size and local-only dependencies. These were cleaned and ignored using .gitignore.
 
 🐳 Docker image build failed due to missing admin UI (index.html not found). Resolved this by skipping admin onboarding or excluding the admin folder.
 
-Medusa backend container exited unexpectedly during ECS provisioning, likely due to:
+🚫 Medusa backend container exited unexpectedly during ECS provisioning, likely due to:
 
-Missing or outdated Medusa source files
+        Missing or outdated Medusa source files
 
-Conflicts in configuration (e.g., outdated medusa-config.ts)
+        Conflicts in configuration (e.g., outdated medusa-config.ts)
 
 🔁 GitHub Actions failed during CD because the Docker image build broke due to outdated or partially broken backend code pushed to GitHub. Required a stable and minimal medusa-backend for production builds.
 
